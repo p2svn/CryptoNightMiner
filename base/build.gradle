@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+ext.fuel_version = '1.12.0'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation "com.android.support:appcompat-v7:$android_support_version"
+    api "com.android.support:design:$android_support_version"
+    /**
+     * fuel网络框架
+     */
+    api "com.github.kittinunf.fuel:fuel-android:$fuel_version"
+    //for Android
+    //    api "com.github.kittinunf.fuel:fuel-livedata:$fuel_version" //for LiveData support
+    //    api "com.github.kittinunf.fuel:fuel-rxjava:$fuel_version" //for RxJava support
+    api "com.github.kittinunf.fuel:fuel-gson:$fuel_version"
+    api 'android.arch.lifecycle:extensions:1.0.0'
+
+}

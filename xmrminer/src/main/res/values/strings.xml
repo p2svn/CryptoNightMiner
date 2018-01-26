@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">XMRMiner</string>
+    <string name="public_key">Wallet address</string>
+    <string name="thread">Thread</string>
+    <string name="speed">Speed</string>
+    <string name="run">Run</string>
+    <string name="stop">Stop</string>
+    <string name="hashes_s">Hashes/S</string>
+    <string name="total">Total</string>
+    <string name="_90">90%</string>
+    <string name="accepted">Accepted</string>
+    <string name="cpu_match">cpu[0-9]</string>
+
+    <string name="url_tip">URL can not be empty</string>
+    <string name="user_tip">User/Wallet address can not be empty</string>
+    <string name="pwd_tip">Password can not be empty</string>
+</resources>
+

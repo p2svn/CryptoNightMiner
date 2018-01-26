@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/Miner_Git.iml" filepath="$PROJECT_DIR$/Miner_Git.iml" />
+      <module fileurl="file://$PROJECT_DIR$/base/base.iml" filepath="$PROJECT_DIR$/base/base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/xmrminer/xmrminer.iml" filepath="$PROJECT_DIR$/xmrminer/xmrminer.iml" />
+    </modules>
+  </component>
+</project>

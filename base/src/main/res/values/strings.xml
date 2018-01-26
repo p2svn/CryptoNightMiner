@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="digit_letterAndNum">0123456789qwertyuioplkjhgfdsazxcvbnm</string>
+    <string name="net_connect_timeout">网络连接超时</string>
+    <string name="data_parse_exception">数据解析异常</string>
+</resources>
