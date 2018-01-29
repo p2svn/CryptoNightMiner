@@ -27,9 +27,7 @@ class JobTest(private val miner: MinerManager,
         Miner.fastHash(blobByte, result)
         val resultStr = HexUtil.hexlify(result)
         val rs = resultStr.substring(resultStr.length - jobBean.target.length)
-        var byteArray = HexUtil.unhexlify(rs)
-        byteArray = miner.byteArraySort(byteArray)
-        val str = HexUtil.hexlify(byteArray)
+        val str = miner.swapEndian(rs)
         str.toLong(16)
         miner.mSleepTime = System.currentTimeMillis() - startTime
         logPrint("Execution algorithm time-consuming ${miner.mSleepTime}")

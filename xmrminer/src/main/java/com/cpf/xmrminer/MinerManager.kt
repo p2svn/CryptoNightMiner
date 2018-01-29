@@ -33,13 +33,20 @@ class MinerManager {
     private var mSubID = ""
     var mJobID = ""
     var mSleepTime = 0L
+    private var mErrorNum = 0
 
-    fun byteArraySort(byteArray: ByteArray): ByteArray {
+    private fun byteArraySort(byteArray: ByteArray): ByteArray {
         val temp = ByteArray(byteArray.size)
         for (i in 0 until byteArray.size) {
             temp[i] = byteArray[byteArray.size - 1 - i]
         }
         return temp
+    }
+
+    fun swapEndian(string: String): String {
+        val byteArray = HexUtil.unhexlify(string)
+        val sortArray = byteArraySort(byteArray)
+        return HexUtil.hexlify(sortArray)
     }
 
     private fun connect() {
@@ -79,9 +86,7 @@ class MinerManager {
             mMsg?.message("Received job")
             var difficulty = 0
             try {
-                val byteArray = HexUtil.unhexlify(jobBean.target)
-                val sortArray = byteArraySort(byteArray)
-                val str = HexUtil.hexlify(sortArray)
+                val str = swapEndian(jobBean.target)
                 val targetL = str.toLong(16)
                 jobBean.target = str
                 difficulty = (Int.MAX_VALUE / targetL).toInt()
@@ -96,6 +101,21 @@ class MinerManager {
                 }
             }
         }
+    }
+
+    fun send(jobBean: Job.JobBean, nonceHex: String, tarHex: String) {
+        val jsonObj = JSONObject()
+        jsonObj.put("id", mId++)
+        jsonObj.put("method", "submit")
+        jsonObj.put("jsonrpc", "2.0")
+        val json = JSONObject()
+        json.put("id", jobBean.id)
+        json.put("job_id", jobBean.jobId)
+        json.put("nonce", nonceHex)
+        json.put("result", tarHex)
+        jsonObj.put("params", json)
+        mPrintWrite?.println(jsonObj.toString())
+        mPrintWrite?.flush()
     }
 
     private fun start() {
@@ -176,6 +196,7 @@ class MinerManager {
                             resultObject.has("status") -> {
                                 if (resultObject.getString("status") == "OK") {
                                     mShareCount++
+                                    mErrorNum = 0
                                 }
                             }
                         }
@@ -185,11 +206,19 @@ class MinerManager {
                         logPrint(error.toString())
                         when {
                             error.getString("message").contains("Incorrect") -> {
-                                mMsg?.message("Submit error")
+                                mMsg?.message("提交错误")
                             }
                             error.getString("message").contains("Invalid") -> {
-                                mMsg?.message("Submit is invalid")
+                                mMsg?.message("提交无效")
                             }
+                            error.getString("message").contains("Low") -> {
+                                mMsg?.message("提交难度过低")
+                            }
+                        }
+                        if (++mErrorNum == 3) {
+                            mMsg?.message("连续错误次数超过3次")
+                            stopMiner()
+                            return
                         }
                     }
                     else -> {
